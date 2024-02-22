@@ -1,10 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import PasswordContext from './PasswordContext';
 import { getRandomChar, getRandomSymbols, shuffleArray } from '../utils/random';
+import useDebounce from '../utils/useDebounce';
 
 const usePassword = () => {
   const [password, setPassword] = useState('');
-  const { lengthPassword, setLengthPassword, difficulty, setDifficulty } = useContext(PasswordContext);
+  const { lengthPassword, setLengthPassword, difficulty, setDifficulty } =
+    useContext(PasswordContext);
+
+  const debouncedLengthPassword = useDebounce(lengthPassword, 500);
 
   const fieldsArray = [
     {
@@ -27,21 +31,21 @@ const usePassword = () => {
 
   const checkDifficultyPassword = (): 'easy' | 'medium' | 'hard' => {
     const checkedFieldsLength = fieldsArray.filter(({ field }) => field).length;
-    if ((lengthPassword > 10 && checkedFieldsLength >= 2) || lengthPassword > 15 ) return 'hard';
+    if ((lengthPassword > 10 && checkedFieldsLength >= 2) || lengthPassword > 15) return 'hard';
     if ((lengthPassword > 5 && checkedFieldsLength > 1) || lengthPassword > 10) return 'medium';
     return 'easy';
-  }
+  };
 
   const checkEmptyFields = () => {
     return fieldsArray.some(({ field }) => field);
-  }
+  };
 
   const changePassword = () => {
     if (!checkEmptyFields()) return;
 
     const password = [];
     const checkedFields = fieldsArray.filter(({ field }) => field);
-    
+
     const eachFieldLength = Math.ceil(lengthPassword / checkedFields.length);
 
     for (let i = 0; i < checkedFields.length; i++) {
@@ -55,8 +59,9 @@ const usePassword = () => {
 
   useEffect(() => {
     changePassword();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lengthPassword, difficulty]);
+    console.log('useEffect');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedLengthPassword, difficulty]);
 
   return {
     password,

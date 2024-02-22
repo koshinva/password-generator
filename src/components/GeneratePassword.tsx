@@ -1,17 +1,15 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/system';
 import toast from 'react-hot-toast';
 import PasswordField from './PasswordField';
 import SettingsPassword from './SettingsPassword';
-import usePassword from '../context/usePassword';
 
 
 const GeneratePassword = () => {
   const theme = useTheme();
-  const { password } = usePassword();
 
-  const handleCopyPassword = () => {
+  const handleCopyPassword = (password: string) => {
     navigator.clipboard.writeText(password);
     toast.success('Copy password successfully');
   };
@@ -51,9 +49,6 @@ const GeneratePassword = () => {
         </Typography>
         <SettingsPassword />
       </StyledBox>
-      <Button variant="contained" sx={{ width: '50%' }} onClick={handleCopyPassword}>
-        Copy password
-      </Button>
     </Stack>
   );
 };

@@ -2,7 +2,7 @@ import { IconButton, Input, InputAdornment, LinearProgress, Tooltip } from '@mui
 import usePassword from '../context/usePassword';
 import { ContentCopyOutlined, RefreshOutlined } from '@mui/icons-material';
 
-const PasswordField = ({ handleCopyPassword }: { handleCopyPassword: () => void }) => {
+const PasswordField = ({ handleCopyPassword }: { handleCopyPassword: (password: string) => void }) => {
   const { password, changePassword, emptyFields, lengthPassword, difficultyPassword } =
     usePassword();
 
@@ -27,7 +27,7 @@ const PasswordField = ({ handleCopyPassword }: { handleCopyPassword: () => void 
         endAdornment={
           <InputAdornment position="end">
             <Tooltip title="Copy" placement="top">
-              <IconButton aria-label="copy password" onClick={handleCopyPassword}>
+              <IconButton aria-label="copy password" onClick={() => handleCopyPassword(password)}>
                 <ContentCopyOutlined />
               </IconButton>
             </Tooltip>

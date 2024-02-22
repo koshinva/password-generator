@@ -16,10 +16,13 @@ import toast from 'react-hot-toast';
 import { capitalizeString } from '../utils/transformString';
 
 const SettingsPassword: FC = () => {
-  const { setLengthPassword, lengthPassword, setDifficulty, difficulty, emptyFields } = usePassword();
+  const { setLengthPassword, lengthPassword, setDifficulty, difficulty, emptyFields } =
+    usePassword();
 
   const handleSlideChange = (_event: Event, newValue: number | number[]) => {
-    setLengthPassword(newValue as number);
+    if (typeof newValue === 'number') {
+      setLengthPassword(newValue);
+    }
   };
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const lengthPas = Number(event.target.value);
@@ -62,7 +65,7 @@ const SettingsPassword: FC = () => {
                 }}
               />
               <Slider
-                value={typeof lengthPassword === 'number' ? lengthPassword : 0}
+                value={lengthPassword}
                 onChange={handleSlideChange}
                 aria-label="Length"
                 aria-labelledby="input-slider"
